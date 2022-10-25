@@ -7,7 +7,7 @@ function Header() {
           <div id="logo" className="col-lg-3 col-md-3 col-sm-12">
             <h1>
               <Link to="/">
-                <img className="img-fluid" src="images/logo.png" />
+                <img className="img-fluid" src="images/logo.png" href="" />
               </Link>
             </h1>
           </div>
