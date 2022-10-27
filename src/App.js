@@ -1,5 +1,6 @@
 import "./App.css";
-import {BrowserRouter, Routes,Route} from "react-router-dom";
+import { getCategories } from "./services/Api";
+import { BrowserRouter, Routes, Route, useActionData } from "react-router-dom";
 
 import Header from "./shared/components/Layout/Header";
 import Menu from "./shared/components/Layout/Menu";
@@ -14,8 +15,18 @@ import NotFound from "./pages/NotFound";
 import ProductDetails from "./pages/ProductDetails";
 import Search from "./pages/Search";
 import Success from "./pages/Success";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [categories, setCategories] = useState([]);
+  
+
+  useEffect(() => {
+    getCategories({}).then(({data}) => {
+      setCategories(data.data.docs);
+    });
+  }, []);
+  
   return (
     <>
       <div>
@@ -26,7 +37,7 @@ function App() {
             <div className="container">
               <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12">
-                  <Menu />
+                  <Menu item={categories} />
                 </div>
               </div>
               <div className="row">
@@ -34,7 +45,7 @@ function App() {
                   <Slider />
                   <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/Category" element={<Category />} />
+                    <Route path="/Category-:id" element={<Category />} />
                     <Route
                       path="/ProductDetails"
                       element={<ProductDetails />}
