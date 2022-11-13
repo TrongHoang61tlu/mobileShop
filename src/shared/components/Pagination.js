@@ -10,6 +10,8 @@ const Pagination = ({ pages }) => {
   const formatUrl = (page) => {
     return `${pathname}?keyword=${searchParams.get("keyword")}&page=${page}`;
   };
+  
+  
 
   //  Tạo ra một mảng các trang theo cấu trúc 1 ... 8 9 (trang hiện hành) 11 12 ... trang cuối
   function renderPagesHTML(delta = 2) {
