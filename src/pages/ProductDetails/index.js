@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   getProduct,
   getCommentsProduct,
   createCommentsProduct,
 } from "../../services/Api";
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { getImageProduct } from "../../shared/ultils";
 import moment from "moment/moment";
+import { ADD_TO_CART } from "../../shared/constannts/acctiontype";
 const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [comments, setComments] = useState([]);
   const [inputComment, setInputComment] = useState(null);
   const params = useParams();
   const id = params.id;
+  const dispatch = useDispatch();
+  const navigae = useNavigate();
 
-  const getComments = (id)=>{
+  const getComments = (id) => {
     getCommentsProduct(id).then(({ data }) => {
       setComments(data.data.docs);
     });
-  }
+  };
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -32,9 +36,29 @@ const ProductDetails = () => {
       if (data.status === "success") {
         setInputComment(null);
       }
-        getComments(id);
+      getComments(id);
     });
   };
+
+  const addToCart = (type) =>{
+    if(product){
+      const {_id, name, image, price} = product;
+      dispatch({
+        type : ADD_TO_CART,
+        payload:{
+          _id,
+          name,
+          image,
+          price,
+          qty : 1,
+        },
+      });
+    }
+    if(type === "buy-now"){
+      navigae("/Cart");
+    }
+  }
+
   useEffect(() => {
     //products
     getProduct(id).then(({ data }) => {
@@ -80,7 +104,9 @@ const ProductDetails = () => {
               )}
             </ul>
             <div id="add-cart">
-              <Link to="/Cart">Mua ngay</Link>
+              <button onClick={() => addToCart("buy-now")} className="btn btn-warning mr-2">Mua ngay</button>
+
+              <button onClick={addToCart} className="btn btn-info">Thêm vào giỏ hàng</button>
             </div>
           </div>
         </div>

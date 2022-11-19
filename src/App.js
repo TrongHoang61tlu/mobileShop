@@ -1,6 +1,7 @@
 import "./App.css";
 import { getCategories } from "./services/Api";
 import { BrowserRouter, Routes, Route, useActionData } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import Header from "./shared/components/Layout/Header";
 import Menu from "./shared/components/Layout/Menu";
@@ -16,6 +17,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Search from "./pages/Search";
 import Success from "./pages/Success";
 import { useEffect, useState } from "react";
+import store from "./redux-setup/store";
 
 function App() {
   const [categories, setCategories] = useState([]);
@@ -30,6 +32,7 @@ function App() {
   return (
     <>
       <div>
+        <Provider store ={store}>
         <BrowserRouter>
           <Header />
           {/*	Body	*/}
@@ -63,6 +66,7 @@ function App() {
           {/*	End Body	*/}
           <Footer />
         </BrowserRouter>
+        </Provider>
       </div>
     </>
   );
